@@ -3,6 +3,7 @@ package ro.sda.travel_agency.dto;
 import lombok.Data;
 
 import java.sql.Date;
+import java.time.Instant;
 
 @Data
 public class ToursDTO {
@@ -12,8 +13,8 @@ public class ToursDTO {
     private CitiesDTO toCity;
     private HotelsDTO hotel;
     private AirportsDTO airport;
-    private Date departureDate;
-    private Date returnDate;
+    private Instant departureDate;
+    private Instant returnDate;
     private Integer numberOfDays;
     private String type;
     private Double adultPrice;

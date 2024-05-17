@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.Instant;
 import java.time.LocalDate;
 
 @NoArgsConstructor
@@ -37,10 +38,10 @@ public class Tours {
     private Airports to_airport;
 
     @Column(name = "departure_date")
-    private LocalDate departure_date;
+    private Instant departure_date;
 
     @Column(name = "return_date")
-    private LocalDate return_date;
+    private Instant return_date;
 
     @Column(name = "number_of_days")
     private int number_of_days;
