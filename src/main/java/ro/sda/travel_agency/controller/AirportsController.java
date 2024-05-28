@@ -9,10 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ro.sda.travel_agency.dto.AirportsDTO;
 import ro.sda.travel_agency.entity.Airports;
-import ro.sda.travel_agency.mapper.AirportsMapper;
 import ro.sda.travel_agency.service.AirportsService;
-
 import java.util.List;
+
 
 @CrossOrigin (origins = "*", maxAge = 3600)
 @RestController
@@ -45,10 +44,39 @@ public class AirportsController {
                     content = @Content),
             @ApiResponse(responseCode = "404", description = "Entity not found",
                     content = @Content) })
-    @GetMapping(value="/airports/{airport_id}", produces = "application/json")
-    public AirportsDTO getAirportById(@PathVariable Integer airport_id){
-        return airportsService.findAirportById(airport_id);
+    @GetMapping(value = "/airports/{id}", produces = "application/json")
+    public AirportsDTO getAirportsById(@PathVariable Integer id) {
+        return airportsService.findAirportsDTOById(id);
     }
 
+    @Operation(summary = "Create a new Airport")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Connection up, operation successful",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = AirportsDTO.class))}),
+            @ApiResponse(responseCode = "400", description = "Invalid data supplied",
+                    content = @Content),
+            @ApiResponse(responseCode = "404", description = "Entity not found",
+                    content = @Content)})
+    @PostMapping("/new_airport")
+    public AirportsDTO createNewDTOAirport(@RequestBody AirportsDTO airportsDTO) {
+        airportsService.createAirport(airportsDTO);
+        return airportsDTO;
+    }
+
+//    @Operation(summary = "Edit Airports by id")
+//    @ApiResponses(value = {
+//            @ApiResponse(responseCode = "200", description = "Connection up, operation successful",
+//                    content = {@Content(mediaType = "application/json",
+//                            schema = @Schema(implementation = AirportsDTO.class))}),
+//            @ApiResponse(responseCode = "400", description = "Invalid id supplied",
+//                    content = @Content),
+//            @ApiResponse(responseCode = "404", description = "Entity not found",
+//                    content = @Content)})
+//    @RequestMapping(value = "/update_airports/{id}", method = {RequestMethod.PUT})
+//    public MissionTask updateMissionTask(@PathVariable("missionTaskId") Integer id, @RequestBody MissionTaskDTO missionTaskDTO) {
+//        MissionTask d = missionTaskService.updateTask(id, missionTaskDTO);
+//        return d;
+//  }
 
 }

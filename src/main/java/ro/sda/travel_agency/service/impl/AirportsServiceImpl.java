@@ -18,8 +18,9 @@ public class AirportsServiceImpl implements AirportsService {
     private AirportsRepository airportsRepository;
 
 
+
     @Override
-    public AirportsDTO findAirportById(Integer id) {
+    public AirportsDTO findAirportsDTOById(Integer id) {
         Optional<Airports> ap = airportsRepository.findById(id);
         Airports airports = null;
         if (ap.isPresent()) {
@@ -31,6 +32,12 @@ public class AirportsServiceImpl implements AirportsService {
     @Override
     public List<Airports> findAllAirports() {
       return airportsRepository.findAll();
+    }
+
+    @Override
+    public void createAirport(AirportsDTO airportsDTO) {
+        Airports airports = AirportsMapper.dtoToEntity(airportsDTO);
+        airportsRepository.save(airports);
     }
 
 
