@@ -17,6 +17,4 @@ public class Continents {
 
     @Column(name = "name")
     private String continent_name;
-
-
 }

@@ -6,25 +6,46 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ro.sda.travel_agency.dto.AirportsDTO;
 import ro.sda.travel_agency.dto.CitiesDTO;
 import ro.sda.travel_agency.entity.Airports;
 import ro.sda.travel_agency.entity.Cities;
-import ro.sda.travel_agency.mapper.AirportsMapper;
-import ro.sda.travel_agency.service.AirportsService;
+import ro.sda.travel_agency.service.CitiesService;
 
 import java.util.List;
+import java.util.Optional;
 
-@CrossOrigin (origins = "*", maxAge = 3600)
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api")
-public class AirportsController {
-
+@RequestMapping("api")
+public class CitiesController {
     @Autowired
-    private AirportsService airportsService;
+    private CitiesService citiesService;
 
-    @Operation(summary = "GET all airports")
+    @Operation(summary = "GET a city by its id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Found the requested entity",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = CitiesDTO.class))}),
+            @ApiResponse(responseCode = "400", description = "Invalid id supplied",
+                    content = @Content),
+            @ApiResponse(responseCode = "404", description = "Entity not found",
+                    content = @Content)})
+
+    @GetMapping(value = "/cities/{id}", produces = "application/json")
+    public ResponseEntity<Cities> getCityById(@PathVariable("id") Integer id) {
+        Optional<Cities> city = citiesService.findCityById(id);
+        if (city.isPresent()) {
+            return ResponseEntity.ok(city.get());
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+
+    @Operation(summary = "GET all cities")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found the requested entities",
                     content = { @Content(mediaType = "application/json",
@@ -34,26 +55,13 @@ public class AirportsController {
             @ApiResponse(responseCode = "404", description = "Entities not found",
                     content = @Content) })
 
-    @GetMapping(value="/airports", produces = "application/json")
-    public List<Airports> getAirports() {
-        return airportsService.findAllAirports();
+    @GetMapping(value="/cities", produces = "application/json")
+    public List<Cities> getCities() {
+        return citiesService.findAllCities();
     }
 
 
-    @Operation(summary = "GET an airport by its id")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Found the requested entities",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = AirportsDTO.class)) }),
-            @ApiResponse(responseCode = "400", description = "Invalid id supplied",
-                    content = @Content),
-            @ApiResponse(responseCode = "404", description = "Entity not found",
-                    content = @Content) })
-    @GetMapping(value="/airports/{id}", produces = "application/json")
-    public AirportsDTO getAirportById(@PathVariable("id") Integer id){
-        return AirportsMapper.entityToDTO(airportsService.findAirportById(id));
-    }
-    @Operation(summary = "Create a new Airport")
+    @Operation(summary = "Create a new City")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Connection up, operation successful",
                     content = {@Content(mediaType = "application/json",
@@ -62,13 +70,13 @@ public class AirportsController {
                     content = @Content),
             @ApiResponse(responseCode = "404", description = "Entity not found",
                     content = @Content)})
-    @PostMapping("/new_airport")
-    public AirportsDTO createNewDTOAirport(@RequestBody AirportsDTO airportsDTO) {
-        airportsService.createAirport(airportsDTO);
-        return airportsDTO;
+    @PostMapping("/new_city")
+    public CitiesDTO createNewDTOACity(@RequestBody CitiesDTO citiesDTO) {
+        citiesService.createCity(citiesDTO);
+        return citiesDTO;
     }
 
-    @Operation(summary = "DELETE an airport by its id")
+    @Operation(summary = "DELETE a city by its id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Airport deleted successfully",
                     content = { @Content(mediaType = "application/json",
@@ -77,11 +85,10 @@ public class AirportsController {
                     content = @Content),
             @ApiResponse(responseCode = "404", description = "Entity not found",
                     content = @Content) })
-    @DeleteMapping("/airports/{id}")
-    public String deleteAirportById(@PathVariable("id") Integer id) {
-        airportsService.deleteAirportById(id);
-        return "Airport deleted successfully";
+    @DeleteMapping("/cities/{id}")
+    public String deleteCityById(@PathVariable("id") Integer id) {
+        citiesService.deleteCityById(id);
+        return "City deleted successfully";
     }
-
 
 }

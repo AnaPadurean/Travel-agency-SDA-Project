@@ -8,19 +8,22 @@ public class ContinentsMapper {
     public static ContinentsDTO entityToDTO(Continents continents) {
         if (continents == null)
             return null;
-            ContinentsDTO continentsDTO = new ContinentsDTO();
-            continentsDTO.setContinentId(continents.getContinent_id());
-            continentsDTO.setContinentName(continents.getContinent_name());
-            return continentsDTO;
-        }
 
-    public static Continents dtoToEntity (ContinentsDTO continentsDTO){
+        ContinentsDTO continentsDTO = new ContinentsDTO();
+
+        continentsDTO.setContinentId(continents.getContinent_id());
+        continentsDTO.setContinentName(continents.getContinent_name());
+
+        return continentsDTO;
+    }
+
+    public static Continents dtoToEntity(ContinentsDTO continentsDTO) {
         if (continentsDTO == null)
             return null;
-            Continents continents = new Continents();
-            continents.setContinent_id(continentsDTO.getContinentId());
-            continents.setContinent_name(continentsDTO.getContinentName());
-            return continents;
 
-        }
+        Continents continents = new Continents();
+        continents.setContinent_id(continentsDTO.getContinentId());
+        continents.setContinent_name(continents.getContinent_name());
+        return continents;
+    }
 }

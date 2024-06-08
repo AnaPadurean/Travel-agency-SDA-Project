@@ -4,12 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ro.sda.travel_agency.dto.AirportsDTO;
 import ro.sda.travel_agency.entity.Airports;
+import ro.sda.travel_agency.entity.Cities;
 import ro.sda.travel_agency.mapper.AirportsMapper;
 import ro.sda.travel_agency.repository.AirportsRepository;
 import ro.sda.travel_agency.service.AirportsService;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class AirportsServiceImpl implements AirportsService {
@@ -18,20 +18,14 @@ public class AirportsServiceImpl implements AirportsService {
     private AirportsRepository airportsRepository;
 
 
-
     @Override
-    public AirportsDTO findAirportsDTOById(Integer id) {
-        Optional<Airports> ap = airportsRepository.findById(id);
-        Airports airports = null;
-        if (ap.isPresent()) {
-            airports = ap.get();
-        }
-        return AirportsMapper.entityToDTO(airports);
+    public Airports findAirportById(Integer id) {
+        return airportsRepository.findById(id).get();
     }
 
     @Override
     public List<Airports> findAllAirports() {
-      return airportsRepository.findAll();
+        return airportsRepository.findAll();
     }
 
     @Override
@@ -40,5 +34,9 @@ public class AirportsServiceImpl implements AirportsService {
         airportsRepository.save(airports);
     }
 
+    @Override
+    public void deleteAirportById(Integer id) {
+        airportsRepository.deleteById(id);
+    }
 
 }
