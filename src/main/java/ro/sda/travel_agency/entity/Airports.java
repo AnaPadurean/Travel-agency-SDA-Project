@@ -1,6 +1,4 @@
 package ro.sda.travel_agency.entity;
-
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,5 +22,4 @@ public class Airports {
     @ManyToOne
     @JoinColumn(name = "city_id", referencedColumnName = "city_id")
     private Cities city;
-
 }

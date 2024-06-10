@@ -71,6 +71,7 @@ public class ContinentsController {
                     content = @Content),
             @ApiResponse(responseCode = "404", description = "Entity not found",
                     content = @Content)})
+    @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/new_continent")
     public ContinentsDTO createNewDTOContinent(@RequestBody ContinentsDTO continentsDTO) {
         continentsService.createContinent(continentsDTO);

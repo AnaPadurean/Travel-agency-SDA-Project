@@ -1,11 +1,11 @@
 package ro.sda.travel_agency.mapper;
 
 import ro.sda.travel_agency.dto.TourPurchaseDTO;
-import ro.sda.travel_agency.entity.TourPurchased;
+import ro.sda.travel_agency.entity.ToursPurchased;
 
-public class TourPurchaseMapper {
+public class ToursPurchasedMapper {
 
-    public static TourPurchaseDTO entityToDTO(TourPurchased tourPurchase) {
+    public static TourPurchaseDTO entityToDTO(ToursPurchased tourPurchase) {
         if (tourPurchase == null)
             return null;
         TourPurchaseDTO tourPurchaseDTO = new TourPurchaseDTO();
@@ -16,10 +16,10 @@ public class TourPurchaseMapper {
         return tourPurchaseDTO;
     }
 
-    public static TourPurchased dtoToEntity(TourPurchaseDTO tourPurchaseDTO) {
+    public static ToursPurchased dtoToEntity(TourPurchaseDTO tourPurchaseDTO) {
         if (tourPurchaseDTO == null)
             return null;
-        TourPurchased tourPurchase = new TourPurchased();
+        ToursPurchased tourPurchase = new ToursPurchased();
         tourPurchase.setTour_purchase_id(tourPurchaseDTO.getTourPurchaseId());
         tourPurchase.setTour(ToursMapper.dtoToEntity(tourPurchaseDTO.getTour()));
         tourPurchase.setNumber_of_persons(tourPurchaseDTO.getNumberOfPersons());

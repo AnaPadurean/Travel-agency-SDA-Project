@@ -1,5 +1,6 @@
 package ro.sda.travel_agency.controller;
 
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -10,88 +11,81 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ro.sda.travel_agency.dto.AirportsDTO;
+import ro.sda.travel_agency.dto.CitiesDTO;
 import ro.sda.travel_agency.dto.ContinentsDTO;
-import ro.sda.travel_agency.dto.HotelsDTO;
-import ro.sda.travel_agency.entity.Continents;
-import ro.sda.travel_agency.entity.Hotels;
-import ro.sda.travel_agency.service.ContinentsService;
+import ro.sda.travel_agency.dto.ToursDTO;
+import ro.sda.travel_agency.entity.Airports;
+import ro.sda.travel_agency.entity.Tours;
+import ro.sda.travel_agency.mapper.AirportsMapper;
+import ro.sda.travel_agency.mapper.ToursMapper;
 import ro.sda.travel_agency.service.HotelsService;
+import ro.sda.travel_agency.service.ToursService;
 
 import java.util.List;
 import java.util.Optional;
-
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("api")
-public class HotelsController {
+public class ToursController {
     @Autowired
-    public HotelsService hotelsService;
+    public ToursService toursService;
 
-    @Operation(summary = "GET a hotel by its id")
+@Operation(summary = "GET a tour by its id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found the requested entity",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ContinentsDTO.class))}),
+                            schema = @Schema(implementation = ToursDTO.class))}),
             @ApiResponse(responseCode = "400", description = "Invalid id supplied",
                     content = @Content),
             @ApiResponse(responseCode = "404", description = "Entity not found",
                     content = @Content)})
+@GetMapping(value="/tours/{id}", produces = "application/json")
+public ToursDTO getATourById(@PathVariable("id") Integer id){
+    return ToursMapper.entityToDTO(toursService.findToursById(id));
+}
 
-    @GetMapping(value = "/hotels/{id}", produces = "application/json")
-    public ResponseEntity<Hotels> getHotelById(@PathVariable("id")Integer id){
-        Optional<Hotels> hotel = hotelsService.findHotelById(id);
-        if (hotel.isPresent()) {
-            return ResponseEntity.ok(hotel.get());
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-    }
-
-    @Operation(summary = "GET all hotels")
+    @Operation(summary = "GET all tours")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found the requested entities",
                     content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ContinentsDTO.class)) }),
+                            schema = @Schema(implementation = ToursDTO.class)) }),
             @ApiResponse(responseCode = "400", description = "Invalid request",
                     content = @Content),
             @ApiResponse(responseCode = "404", description = "Entities not found",
                     content = @Content) })
 
-    @GetMapping(value="/hotels", produces = "application/json")
-    public List<Hotels> getHotels() {
-        return hotelsService.findAllHotels();
+    @GetMapping(value="/tours", produces = "application/json")
+    public List<Tours> getTours() {
+        return toursService.findAllTours();
     }
 
-    @Operation(summary = "Create a new Hotels")
+    @Operation(summary = "Create a new Tour")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Connection up, operation successful",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = HotelsDTO.class))}),
+                            schema = @Schema(implementation = ToursDTO.class))}),
             @ApiResponse(responseCode = "400", description = "Invalid data supplied",
                     content = @Content),
             @ApiResponse(responseCode = "404", description = "Entity not found",
                     content = @Content)})
-    @PostMapping("/new_hotel")
-    public HotelsDTO createNewDTOHotel(@RequestBody HotelsDTO hotelsDTO) {
-        hotelsService.createHotel(hotelsDTO);
-        return hotelsDTO;
+    @PostMapping("/new_tour")
+    public ToursDTO createNewDTOTour(@RequestBody ToursDTO tourDTO) {
+        toursService.createTour(tourDTO);
+        return tourDTO;
     }
 
-    @Operation(summary = "DELETE a hotel by its id")
+    @Operation(summary = "DELETE a tour by its id")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Hotel deleted successfully",
+            @ApiResponse(responseCode = "200", description = "Tour deleted successfully",
                     content = { @Content(mediaType = "application/json",
                             schema = @Schema(implementation = String.class)) }),
             @ApiResponse(responseCode = "400", description = "Invalid id supplied",
                     content = @Content),
             @ApiResponse(responseCode = "404", description = "Entity not found",
                     content = @Content) })
-    @DeleteMapping("/hotels/{id}")
-    public String deleteHoteltById(@PathVariable("id") Integer id) {
-        hotelsService.deleteHotelById(id);
-        return "Hotel deleted successfully";
+    @DeleteMapping("/tours/{id}")
+    public String deleteTourById(@PathVariable("id") Integer id) {
+        toursService.deleteTourById(id);
+        return "Tour deleted successfully";
     }
-
-
-
 }

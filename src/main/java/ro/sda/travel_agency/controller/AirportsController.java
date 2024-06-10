@@ -28,7 +28,7 @@ public class AirportsController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found the requested entities",
                     content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = CitiesDTO.class)) }),
+                            schema = @Schema(implementation = AirportsDTO.class)) }),
             @ApiResponse(responseCode = "400", description = "Invalid request",
                     content = @Content),
             @ApiResponse(responseCode = "404", description = "Entities not found",
